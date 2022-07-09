@@ -1,17 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import './index.css'
+// 打包css 主要是看 js的部分
+// 因為webpack只會打包 js, 所以剩下 的檔案需要引入 js
+// 讓webpack知道 這個東西也需要跟著被打包
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+console.log('hi!!');
+alert('hi!!');
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+
+class Test {
+    #a =1
+}
+
+let tt = new Test()
+console.log('tt: ', tt.a)
