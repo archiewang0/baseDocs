@@ -1,0 +1,1 @@
+{"version":3,"file":"main.434a0ef281e1acc27717.bundle.css","mappings":"AAAA;IACI,qBAAqB;IACrB,yDAAoC;AACxC,C","sources":["webpack://test_react/./src/index.css"],"sourcesContent":["body{\n    background-color: red;\n    background-image: url('./78783.jpg');\n}"],"names":[],"sourceRoot":""}
