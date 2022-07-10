@@ -62,7 +62,7 @@ module.exports = {
             },
             {
                 test: /\.m?js$/,
-                exclude: /node_modules/,
+                exclude: /(node_modules|bower_components)/,
                 // 加入babel
                 //  
                 use: {
@@ -90,6 +90,21 @@ module.exports = {
         new miniCssExtractPlugin({
             filename: 'main.[hash].bundle.css', 
         })
-    ]
+    ],
+
+    // alias 可以將路徑設為變數
+    // 當在我們的專案內使用 import xxx from @test/index.css
+    // 等同於 import xxx from 'C:docs/test_react/src/index.css'
+    // 只是變成絕對路徑的方式
+
+    // 使用resolve 在module.rules[{}] js系列打包 要在 exclude給予 /(node_modules|bower_components)/,
+    // 讓 @test 才可以在一般檔案內都可以讀得懂
+
+    resolve: {
+        extensions: ['.ts', '.tsx', '.js', '.jsx', 'css', 'scss'],
+        alias: {
+            '@test': path.resolve(__dirname, './src'),
+        },
+    }
 };
 
