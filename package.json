@@ -13,6 +13,7 @@
   },
   "scripts": {
     "bundle": "set NODE_ENV=ccc &&  webpack  --mode production   ",
+    "watch": "set NODE_ENV=development && webpack --watch --mode production ",
     "webpack_dev": "set NODE_ENV=aaa && webpack serve"
   },
   "eslintConfig": {

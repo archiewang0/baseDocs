@@ -2,3 +2,9 @@ body{
     background-color: red;
     background-image: url('./78783.PNG');
 }
+
+button{
+    width: 100px;
+    height: 100px;
+    font-weight: bold;
+}
