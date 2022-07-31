@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const miniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 // 因為 package 有將cmd 的指令記錄下 "set NODE_ENV=DDD && webpack"
 // 的指令,會將該變數 變成DDD 之後以下都是正常JS操作了
@@ -13,20 +14,39 @@ module.exports = {
     // 也可以在 package.json 裡面 script 使用指令達成 (範例一)
     // 就不需要這禮拜入 mode: ... 
     // 範例一: 'set NODE_ENV=ddd && webpack --mode development'
-    // mode: 'development', //選擇打包模式
+    mode: 'development', //選擇打包模式
     // mode: 'production',
 
     // 入口
-    entry: './src/index.js',
-
-    // 出口 打包完之後 名稱可以自定義
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        // filename: 'main.bundle.js',
-        filename: 'main.[hash].bundle.js', //產生流水號的 bundle
+    // 可以設立單一入口
+    // entry: './src/index.js',
+    // 可以設立多個入口
+    entry: {
+        // 這個之後會變成name
+        test: './src/test/index.js',
+        test2: './src/test2/index.js'
     },
 
-  // 開啟 webpack serve 的參數
+    // 出口 打包完之後 名稱可以自定義
+    // output: {
+    //     path: path.resolve(__dirname, 'dist'),
+    //     // filename: 'main.bundle.js',
+    //     filename: 'main.[hash].bundle.js', //產生流水號的 bundle
+    // },
+    // 多個output
+    output:{
+        path: path.resolve(__dirname, 'dist'),
+        filename: '[name]/[name][hash].js',
+        // 多個output主要是藉由filename 的路徑來產生
+
+        // 當有引入 圖片 可以使用這個方式將圖片統一管理
+        // js css 也將會把 url 路徑指向打包後的地方
+        assetModuleFilename: 'images/[name][ext]',
+    },
+
+
+
+    // 開啟 webpack serve 的參數
     devServer: {
         // 開啟 serve 之後固定已某個路徑為基準點, (起serve後進入localhost的第一頁面)
         contentBase: path.join(__dirname, 'dist'), //contentBase 之後會被 static 給替換掉
@@ -74,6 +94,43 @@ module.exports = {
             {
                 test: /\.(png|svg|jpg|jpeg|gif)$/i,
                 type: 'asset/resource',
+                // 可以產出指定地方(js css 有引用img 的檔案路徑會指向打包出的路徑)
+                // generator:{
+                //     filename: 'img/[name].[ext]'
+                // }
+
+                // use: {
+                //     // loader: 'file-loader',
+                //     // options: {
+                //     //     name: 'img/[name].[ext]'
+                //     // }
+                // }
+                // use: [
+                //     {
+                //         loader: 'file-loader',
+                //         // loader: 'url-loader',
+                        
+                //         // options: {
+                //         //     // name: 'test/[name].[ext]',
+                //         //     outputPath: 'asset'
+                //         // }
+
+                //         // options: {
+                //         //     name: 'asset/[name].[ext]',
+                //         //     context: path.resolve(__dirname, "src/"),
+                //         //     publicPath: '../',
+                //         //     useRelativePaths: true
+                //         // }
+
+                //         // options: {
+                //         //     name: 'asset/[name].[ext]',
+                //         //     // 用以限制須轉為 base64 的文件大小 (單位：byte)
+                //         //     limit: 8192,
+                //         //     // 超過大小及調用 file-loader
+                //         //     fallback: require.resolve('file-loader'),
+                //         //   },
+                //     }
+                // ]
             },
             
         ],
@@ -83,13 +140,48 @@ module.exports = {
     // 但css 還是需要由 js 引入, 不引入css 則不會打包該 css(html引入沒用)
     plugins: [
         // 刪除文之前打包的檔案
+        // new CleanWebpackPlugin(['dist']),
         new CleanWebpackPlugin(),
+        // new HtmlWebpackPlugin({
+        //     template: './templateHtml.html'
+        // }),
+        // new miniCssExtractPlugin({
+        //     filename: 'main.[hash].bundle.css', 
+        // })
+
         new HtmlWebpackPlugin({
-            template: './templateHtml.html'
+            filename: 'test/index.html',
+            template: './src/test/index.html',
+            chunks: ['test']
+            // 針對 entry 的打包js 內容
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'test2/index.html',
+            template: './src/test2/index.html',
+            chunks: ['test2']
+            // 針對 entry 的打包js 內容
+            // webpack 主要是針對js 來進行打包
+            // 所以 css 可以引入的在js 打包時候 會知道哪個css 配對哪個js
+            // 則 html 不知道哪個js 是要引入的
+            // 所以會需要 chunks 來告訴 entry個別的js 是屬於哪個html
+
         }),
         new miniCssExtractPlugin({
-            filename: 'main.[hash].bundle.css', 
-        })
+            filename: '[name]/index.css', 
+            
+        }),
+        // new CopyWebpackPlugin({
+        //     patterns: [
+        //         {
+        //             // from: './src/*.css', // 選擇源目錄下的所有css檔案
+        //             // flatten: true // 選擇拷貝檔案還是包括資料夾，預設是false
+        //             // from: "./src/*/*.css",
+        //             // to: "[file].[ext]",
+        //         },
+
+        //     ],
+        // }),
+
     ],
 
     // alias 可以將路徑設為變數
@@ -99,7 +191,6 @@ module.exports = {
 
     // 使用resolve 在module.rules[{}] js系列打包 要在 exclude給予 /(node_modules|bower_components)/,
     // 讓 @test 才可以在一般檔案內都可以讀得懂
-
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx', 'css', 'scss'],
         alias: {

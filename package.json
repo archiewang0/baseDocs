@@ -6,13 +6,16 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "html-loader": "^4.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
+    "url-loader": "^4.1.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "bundle": "set NODE_ENV=ccc &&  webpack  --mode production   ",
+    "bundle": "set NODE_ENV=ccc &&  webpack  --mode development   ",
     "watch": "set NODE_ENV=development && webpack --watch --mode production ",
     "webpack_dev": "set NODE_ENV=aaa && webpack serve",
     "server": "node server.js"

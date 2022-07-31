@@ -1,7 +1,8 @@
 body{
     background-color: red;
-    background-image: url('./78783.PNG');
+    background-image: url('./78783.PNG'); 
     padding: 100px;
+    margin-bottom: 5px;
 }
 
 button{

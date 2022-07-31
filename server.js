@@ -23,14 +23,15 @@ app.use(
         icons: true,
         view: 'details',
         filter: function (filename, index, files, dir) {
-            if (
-                filename == 'node_modules' ||
-                filename == 'server.js'
-            ) {
-                return false
-            } else {
-                return true
-            }
+            return filename === 'node_modules' || filename === 'server.js' ? false : true
+            // if (
+            //     filename == 'node_modules' ||
+            //     filename == 'server.js'
+            // ) {
+            //     return false
+            // } else {
+            //     return true
+            // }
         },
     })
 )
