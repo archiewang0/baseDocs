@@ -1,5 +1,7 @@
 # webpack 基本
 
+[參考網站] (https://webpack.js.org/)
+
 > package.json 使用版本
 > ```
 > "devDependencies": {
@@ -35,3 +37,4 @@ set NODE_ENV=ccc && webpack
 --mode production 
 --mode development
 可以在直接帶入 webpack mode 的部分, 則webpack.config.js 可以刪除 mode的部分(因為指令會直接帶入)
+
