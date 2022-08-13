@@ -2,7 +2,6 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const miniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 // 因為 package 有將cmd 的指令記錄下 "set NODE_ENV=DDD && webpack"
 // 的指令,會將該變數 變成DDD 之後以下都是正常JS操作了
